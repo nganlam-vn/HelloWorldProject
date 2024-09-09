@@ -1,4 +1,4 @@
-package iostar.vn;
+package iostar.vn.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * Servlet implementation class HelloController
  */
+@WebServlet(urlPatterns = {"/hello"})
 public class HelloController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
