@@ -97,7 +97,7 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 	}
 
 	@Override
-	public UserModel login(int id, String username, String password) {
+	public UserModel login(String username, String password) {
 		UserModel user = this.findByUsername(username);
 		if(user != null && (username.equals(user.getUsername())) && password.equals(user.getPassword())) {
 			return user;
@@ -136,7 +136,7 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 //		userDAO.register(new UserModel(3, "abc", "abcusername", "abcpassword"));
 		
 		//LOGIN
-		System.out.println(userDAO.login(2, "nganne", "123"));
+		System.out.println(userDAO.login("nganne", "123"));
 		
 		
 		List<UserModel> list = userDAO.findAll();

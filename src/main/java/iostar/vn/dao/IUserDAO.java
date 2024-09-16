@@ -10,7 +10,7 @@ public interface IUserDAO {
 	
 	void insert(UserModel user);
 
-	UserModel login(int id, String username, String password);
+	UserModel login(String username, String password);
 	
 	void register(UserModel user);
 	
