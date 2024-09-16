@@ -16,6 +16,8 @@ public interface IUserDAO {
 	
 	boolean checkExistUsername(String username);
 	
+	UserModel findByUsername(String username);
+	
 	
 
 }

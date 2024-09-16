@@ -27,7 +27,7 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 			rs = ps.executeQuery();
 			
 			while(rs.next() /*Next: tung dong toi cuoi bang*/) {
-				list.add(new UserModel(rs.getInt("id"), rs.getString("username"), rs.getString("name"), rs.getString("password")));//add vao
+				list.add(new UserModel(rs.getInt("id"), rs.getString("username"), rs.getString("fullName"), rs.getString("password")));//add vao
 			}
 			return list;
 		}
@@ -51,7 +51,7 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 						return new UserModel(	
 								rs.getInt("id"),
 								rs.getString("username"),
-								rs.getString("name"),
+								rs.getString("fullName"),
 								rs.getString("password")
 								);
 								
@@ -62,6 +62,32 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 				}
 				return null;
 	}
+	
+	public UserModel findByUsername(String username) {
+		String sql = "select * from users where users.username = ?";
+				
+				try {
+					conn = super.getConnection();
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, username);
+					rs = ps.executeQuery();
+					
+					if(rs.next()) {
+						return new UserModel(	
+								rs.getInt("id"),
+								rs.getString("username"),
+								rs.getString("fullName"),
+								rs.getString("password")
+								);
+								
+					}
+					
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+				return null;
+	}
+	
 
 
 	@Override
@@ -72,8 +98,8 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 
 	@Override
 	public UserModel login(int id, String username, String password) {
-		UserModel user = this.findByID(id);
-		if(user != null && (id == user.getId()) && password.equals(user.getPassword())) {
+		UserModel user = this.findByUsername(username);
+		if(user != null && (username.equals(user.getUsername())) && password.equals(user.getPassword())) {
 			return user;
 		}
 		return null;
@@ -81,13 +107,13 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 
 	@Override
 	public void register(UserModel user) {
-		String sql = "INSERT INTO users(name, username, password) VALUES ( ?, ?, ?)";
+		String sql = "INSERT INTO users(fullName, username, password, email, avatar, phoneNumber, createdDate) VALUES ( ?, ?, ?, ?, ?, ? ,?)";
 		try {
 			conn = super.getConnection();
 			
 			ps = conn.prepareStatement(sql);
 			
-			ps.setString(1, user.getName());
+			ps.setString(1, user.getFullName());
 			ps.setString(2, user.getUsername());
 			ps.setString(3, user.getPassword());
 			
@@ -107,10 +133,10 @@ public class UserDAOimpl extends DBConnectMySQL implements IUserDAO {
 		UserDAOimpl userDAO = new UserDAOimpl();
 		
 		//REGISTER
-		userDAO.register(new UserModel(3, "abc", "abcusername", "abcpassword"));
+//		userDAO.register(new UserModel(3, "abc", "abcusername", "abcpassword"));
 		
 		//LOGIN
-		System.out.println(userDAO.login(2, "abc", "abcpassword"));
+		System.out.println(userDAO.login(2, "nganne", "123"));
 		
 		
 		List<UserModel> list = userDAO.findAll();
